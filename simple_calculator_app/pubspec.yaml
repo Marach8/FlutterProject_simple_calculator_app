@@ -30,9 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts:
-  math_parser:
-  math_expression:
+  google_fonts: 
+  math_expressions: ^2.4.0
 
 
   # The following adds the Cupertino Icons font to your application.
