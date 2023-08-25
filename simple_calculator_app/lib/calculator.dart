@@ -37,7 +37,7 @@ class _Calculator extends State<Calculator> {
     if (data.isNotEmpty){
       final data1 = data.substring(0, data.length - 1);
       _controller.sink.add(data1);
-      //expression = '';
+      expression = data1;
     } return;    
   }
 
@@ -45,12 +45,13 @@ class _Calculator extends State<Calculator> {
     if (data.isNotEmpty){
       const data1 = '';
       _controller.sink.add(data1);
+      expression = '';
     } return;    
   }
 
   _tap(String data) => tap(data);
-  _remove(String data) => remove(data);
-  _removeAll(String data) => removeAll(data);
+  // _remove(String data) => remove(data);
+  // _removeAll(String data) => removeAll(data);
 
 
   Widget buttons (String symbol, Color color, VoidCallback function){
@@ -99,7 +100,7 @@ class _Calculator extends State<Calculator> {
                     Positioned(
                       left: 5, top: 5,
                       child: Text(
-                        snapshot.hasData? snapshot.data.toString(): '0',
+                        snapshot.hasData? snapshot.data.toString(): '',
                         style: const TextStyle(
                           color: Colors.black, fontSize: 50, fontWeight: FontWeight.bold,
                           fontFamily: 'monospace'
@@ -135,8 +136,8 @@ class _Calculator extends State<Calculator> {
                         case '.': case '(': case ')':
                           return buttons(string, Colors.blue.shade300, () => _tap(string));
                         case 'AC':  
-                          return buttons(string, Colors.red.shade700, () => _removeAll(string));
-                        case 'Del': return buttons(string, Colors.red.shade300, () => _remove(snapshot.data.toString()));
+                          return buttons(string, Colors.red.shade700, () => removeAll(string));
+                        case 'Del': return buttons(string, Colors.red.shade300, () => remove(snapshot.data.toString()));
                         case '=': return buttons(string, Colors.green, () => _tap(string));
                         default: return buttons(string, Colors.white70, () => _tap(string));
                       }
