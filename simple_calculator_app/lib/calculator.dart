@@ -16,6 +16,7 @@ class _Calculator extends State<Calculator> {
   List<String> symbols = ['1','2','3','+','4','5','6','-','7','8','9','/','0','(',')','*','AC','Del', '.', '='];
   final StreamController<List<String>> _controller = StreamController<List<String>>.broadcast(); 
   List<String> myList = ['', ''];
+  
 
   @override 
   void dispose(){
@@ -23,16 +24,17 @@ class _Calculator extends State<Calculator> {
     super.dispose();
   }
 
-  bool isTapped = false;
+  onClick(bool stringCol){
+    setState(() => stringCol = true);
+    Future.delayed(const Duration(seconds:1), () => setState(() => stringCol = false));    
+  }
 
-  tap(String a){
-    setState(() => isTapped = true);
-    Future.delayed(const Duration(milliseconds:10), () => setState(() => isTapped = false));
+  tap(String a,){  
     myList[0] += a;
     _controller.sink.add(myList);
   }
 
-  remove(b){
+  remove(String b){
     if (b.isNotEmpty){
       final data1 = b.substring(0, b.length - 1);
       myList[0] = data1;      
@@ -40,36 +42,39 @@ class _Calculator extends State<Calculator> {
     } return;    
   }
 
-  removeAll(b){
+  removeAll(String b,){
     if (b.isNotEmpty){
       myList[0] = ''; myList[1] = '0';
       _controller.sink.add(myList);
     } return;    
   }
 
-  finalResult(String b){
+  finalResult(String b,){
     try{
       Parser p = Parser();
-    ContextModel contextModel = ContextModel();
-    Expression exp = p.parse(b);
-    double result = exp.evaluate(EvaluationType.REAL, contextModel);
-    myList[1] = result.toString();
-    _controller.sink.add(myList);
+      ContextModel contextModel = ContextModel();
+      Expression exp = p.parse(b);
+      double result = exp.evaluate(EvaluationType.REAL, contextModel);
+      myList[1] = result.toString();
+      _controller.sink.add(myList);
     } catch (e) {
       myList[1] = 'Error';
       _controller.sink.add(myList);
-      print(e);
     }    
   }
 
-  _tap(String data) => tap(data);
+  _tap(String data,) => tap(data);
+  _onClick(bool c) => onClick(c);
 
-  Widget buttons (String symbol, Color color, VoidCallback function){
+  Widget buttons (String symbol, Color color, bool clickColor, VoidCallback function1, VoidCallback function2){
     return InkWell(
-      onTap: function,
+      onTap: (){
+        function2();
+        function1();
+      },
       child: Container(          
         decoration: BoxDecoration(
-          color: isTapped ? Colors.yellow : color,
+          color: clickColor ? Colors.yellow : color,
           borderRadius: BorderRadius.circular(15)
         ),
         height: 50, width: 50, 
@@ -89,7 +94,7 @@ class _Calculator extends State<Calculator> {
   @override 
   Widget build(BuildContext context){
     var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
+    var w = MediaQuery.of(context).size.width;  
 
 
     return StreamBuilder<List<String>?>(
@@ -139,16 +144,19 @@ class _Calculator extends State<Calculator> {
                     itemCount: symbols.length,
                     itemBuilder: (context, index){
                       final string = symbols[index];
+                      bool stringColor = false;                      
                       switch(string){
                         case '+': case '-': case '/': case '*': 
-                          return buttons(string, const Color.fromARGB(255, 132, 98, 59), () => _tap(string)); 
-                        case '.': case '(': case ')':
-                          return buttons(string, Colors.blue.shade300, () => _tap(string));
-                        case 'AC':  
-                          return buttons(string, Colors.red.shade700, () => removeAll(snapshot.data![0]));
-                        case 'Del': return buttons(string, Colors.red.shade300, () => remove(snapshot.data![0]));
-                        case '=': return buttons(string, Colors.green, () => finalResult(snapshot.data![0]));
-                        default: return buttons(string, Colors.white70, () => _tap(string));
+                          return buttons(string, const Color.fromARGB(255, 132, 98, 59), stringColor,() => _tap(string), () => _onClick(stringColor)); 
+                        case '.': case '(': case ')': 
+                          return buttons(string, Colors.blue.shade300, stringColor, () => _tap(string), () => _onClick(stringColor));
+                        case 'AC':
+                          return buttons(string, Colors.red.shade700, stringColor, () => removeAll(snapshot.data![0]), () => _onClick(stringColor));
+                        case 'Del': 
+                          return buttons(string, Colors.red.shade300, stringColor, () => remove(snapshot.data![0]), () => _onClick(stringColor));
+                        case '=': 
+                          return buttons(string, Colors.green, stringColor, () => finalResult(snapshot.data![0]), () => _onClick(stringColor));
+                        default: return buttons(string, Colors.white70, stringColor, () => _tap(string), () => _onClick(stringColor));
                       }
                     }                
                   )
