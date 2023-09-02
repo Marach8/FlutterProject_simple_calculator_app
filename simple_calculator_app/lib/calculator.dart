@@ -15,18 +15,13 @@ class _Calculator extends State<Calculator> {
 
   List<String> symbols = ['1','2','3','+','4','5','6','-','7','8','9','/','0','(',')','*','AC','Del', '.', '='];
   final StreamController<List<String>> _controller = StreamController<List<String>>.broadcast(); 
-  List<String> myList = ['', ''];
+  List<String> myList = ['', '']; List<bool> clickedButton = List.generate(20, (_) => false);
   
 
   @override 
   void dispose(){
     _controller.close();
     super.dispose();
-  }
-
-  onClick(bool stringCol){
-    setState(() => stringCol = true);
-    Future.delayed(const Duration(seconds:1), () => setState(() => stringCol = false));    
   }
 
   tap(String a,){  
@@ -64,29 +59,27 @@ class _Calculator extends State<Calculator> {
   }
 
   _tap(String data,) => tap(data);
-  _onClick(bool c) => onClick(c);
 
-  Widget buttons (String symbol, Color color, bool clickColor, VoidCallback function1, VoidCallback function2){
-    return InkWell(
-      onTap: (){
-        function2();
-        function1();
-      },
-      child: Container(          
-        decoration: BoxDecoration(
-          color: clickColor ? Colors.yellow : color,
-          borderRadius: BorderRadius.circular(15)
-        ),
-        height: 50, width: 50, 
-        child: Center(
-          child: Text(
-            symbol,
-            style: const TextStyle(
-              color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold,
-              fontFamily: 'monospace'
-            )
+  Widget buttons (String symbol, Color color, VoidCallback function1, int index){
+    return Material(
+      child: InkWell(
+        onTap: () async{
+          setState(() => clickedButton[index] = true); function1();
+          await Future.delayed(const Duration(milliseconds:10), () => setState(() => clickedButton[index] = false));
+        },
+        child: Container(          
+          decoration: BoxDecoration(
+            color: clickedButton[index]? Colors.black: color, borderRadius: BorderRadius.circular(15),
+            
           ),
-        )
+          height: 50, width: 50, 
+          child: Center(
+            child: Text(
+              symbol,
+              style: const TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'monospace')
+            ),
+          )
+        ),
       ),
     );
   }
@@ -143,20 +136,19 @@ class _Calculator extends State<Calculator> {
                     ),
                     itemCount: symbols.length,
                     itemBuilder: (context, index){
-                      final string = symbols[index];
-                      bool stringColor = false;                      
+                      final string = symbols[index];                     
                       switch(string){
                         case '+': case '-': case '/': case '*': 
-                          return buttons(string, const Color.fromARGB(255, 132, 98, 59), stringColor,() => _tap(string), () => _onClick(stringColor)); 
+                          return buttons(string, const Color.fromARGB(255, 132, 98, 59), () => _tap(string), index); 
                         case '.': case '(': case ')': 
-                          return buttons(string, Colors.blue.shade300, stringColor, () => _tap(string), () => _onClick(stringColor));
+                          return buttons(string, Colors.blue.shade300, () => _tap(string), index);
                         case 'AC':
-                          return buttons(string, Colors.red.shade700, stringColor, () => removeAll(snapshot.data![0]), () => _onClick(stringColor));
+                          return buttons(string, Colors.red.shade700, () => removeAll(snapshot.data![0]), index);
                         case 'Del': 
-                          return buttons(string, Colors.red.shade300, stringColor, () => remove(snapshot.data![0]), () => _onClick(stringColor));
+                          return buttons(string, Colors.red.shade300, () => remove(snapshot.data![0]), index);
                         case '=': 
-                          return buttons(string, Colors.green, stringColor, () => finalResult(snapshot.data![0]), () => _onClick(stringColor));
-                        default: return buttons(string, Colors.white70, stringColor, () => _tap(string), () => _onClick(stringColor));
+                          return buttons(string, Colors.green, () => finalResult(snapshot.data![0]), index);
+                        default: return buttons(string, Colors.white70, () => _tap(string), index);
                       }
                     }                
                   )
