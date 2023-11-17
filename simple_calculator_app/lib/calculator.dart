@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -58,7 +59,7 @@ class _Calculator extends State<Calculator> {
     }    
   }
 
-  _tap(String data,) => tap(data);
+  _tap(String data) => tap(data);
 
   Widget buttons (String symbol, Color color, VoidCallback function1, int index){
     return Material(
@@ -106,22 +107,31 @@ class _Calculator extends State<Calculator> {
                   children: [
                     Positioned(
                       left: 5, top: 5,
-                      child: Text(                        
-                        snapshot.hasData ? snapshot.data![0]: '',
-                        style: const TextStyle(
-                          color: Colors.black, fontSize: 50, fontWeight: FontWeight.bold,
-                          fontFamily: 'monospace'
-                        )
+                      child: SizedBox(
+                        width: w,
+                        child: AutoSizeText(                        
+                          snapshot.hasData ? snapshot.data![0]: '',
+                          style: const TextStyle(
+                            color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold,
+                            fontFamily: 'monospace'
+                          ),
+                          maxFontSize: 40, minFontSize: 10, maxLines: 1,
+                        ),
                       )
                     ),
                     Positioned(
                       right: 5, bottom: 5,
-                      child: Text(
-                        snapshot.hasData? snapshot.data![1]: '',
-                        style: const TextStyle(
-                          color: Colors.black, fontSize: 50, fontWeight: FontWeight.bold,
-                          fontFamily: 'monospace'
-                        )
+                      child: SizedBox(
+                        width: w,
+                        child: AutoSizeText(
+                          snapshot.hasData? snapshot.data![1]: '',
+                          style: const TextStyle(
+                            color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold,
+                            fontFamily: 'monospace'
+                          ),
+                          maxFontSize: 40, minFontSize: 10, maxLines: 1,
+                          textAlign: TextAlign.end,
+                        ),
                       )
                     ),
                   ],
