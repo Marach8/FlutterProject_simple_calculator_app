@@ -18,7 +18,10 @@ class ButtonModel extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: function,
-      child: Text(symbol)
+      child: Text(
+        symbol,
+        style: TextStyle(fontSize: 25, color: buttonColor, fontWeight: FontWeight.w200)
+      )
     );
   }
 }
