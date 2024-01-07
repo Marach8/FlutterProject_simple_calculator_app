@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:simple_calculator_app/button_model.dart';
+import 'package:simple_calculator_app/list_of_symbols.dart';
 
 
 class Calculator extends StatefulWidget{
@@ -14,9 +16,10 @@ class Calculator extends StatefulWidget{
 
 class _Calculator extends State<Calculator> {
 
-  List<String> symbols = ['1','2','3','+','4','5','6','-','7','8','9','/','0','(',')','*','AC','Del', '.', '='];
+ 
   final StreamController<List<String>> _controller = StreamController<List<String>>.broadcast(); 
-  List<String> myList = ['', '']; List<bool> clickedButton = List.generate(20, (_) => false);
+  List<String> myList = ['', '']; 
+  List<bool> clickedButton = List.generate(20, (_) => false);
   
 
   @override 
@@ -144,21 +147,21 @@ class _Calculator extends State<Calculator> {
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4, crossAxisSpacing: 10, mainAxisSpacing: 10, 
                     ),
-                    itemCount: symbols.length,
+                    itemCount: listOfSymbols.length,
                     itemBuilder: (context, index){
-                      final string = symbols[index];                     
-                      switch(string){
+                      final symbol = listOfSymbols.elementAt(index);
+                      switch(symbol){
                         case '+': case '-': case '/': case '*': 
-                          return buttons(string, const Color.fromARGB(255, 132, 98, 59), () => _tap(string), index); 
+                          return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
                         case '.': case '(': case ')': 
-                          return buttons(string, Colors.blue.shade300, () => _tap(string), index);
+                          return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
                         case 'AC':
-                          return buttons(string, Colors.red.shade700, () => removeAll(snapshot.data![0]), index);
+                          return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
                         case 'Del': 
-                          return buttons(string, Colors.red.shade300, () => remove(snapshot.data![0]), index);
+                          return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
                         case '=': 
-                          return buttons(string, Colors.green, () => finalResult(snapshot.data![0]), index);
-                        default: return buttons(string, Colors.white70, () => _tap(string), index);
+                          return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
+                        default: return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
                       }
                     }                
                   )
