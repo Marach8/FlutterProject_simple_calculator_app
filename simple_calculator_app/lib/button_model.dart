@@ -4,13 +4,11 @@ class ButtonModel extends StatelessWidget {
   final Color buttonColor;
   final String symbol;
   final VoidCallback? function;
-  final int index;
 
   const ButtonModel({
     required this.buttonColor, 
     required this.symbol,
     required this.function,
-    required this.index, 
     super.key
   });
 

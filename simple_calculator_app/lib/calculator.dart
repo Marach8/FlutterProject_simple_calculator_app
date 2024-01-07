@@ -11,17 +11,18 @@ class Calculator extends StatelessWidget{
   @override 
   Widget build(BuildContext context){
     var w = MediaQuery.of(context).size.width;
-    final ButtonFunction buttonFunc = ButtonFunction();
+    final buttonFunction = ButtonFunction();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Simple Calculator', style: TextStyle(color: Colors.blueGrey.shade500)), 
+        title: const Text('Simple Calculator', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w200)), 
         centerTitle: true, backgroundColor: Colors.black26,        
       ),
+
       body: Column(
         children: [
           StreamBuilder<List<String>>(
-            stream: buttonFunc.controller.stream,
+            stream: buttonFunction.controller.stream,
             builder: (context, snapshot) {
               return Expanded(
                 flex: 2,
@@ -35,11 +36,10 @@ class Calculator extends StatelessWidget{
                           width: w,
                           child: AutoSizeText(                        
                             snapshot.hasData ? snapshot.data![0]: '',
-                            style: const TextStyle(
-                              color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold,
-                              fontFamily: 'monospace'
+                            style: TextStyle(
+                              color: Colors.blueGrey.shade400, fontSize: 50, fontWeight: FontWeight.w300,
                             ),
-                            maxFontSize: 40, minFontSize: 10, maxLines: 1,
+                            maxFontSize: 50, minFontSize: 10, maxLines: 1,
                           ),
                         )
                       ),
@@ -49,9 +49,8 @@ class Calculator extends StatelessWidget{
                           width: w,
                           child: AutoSizeText(
                             snapshot.hasData? snapshot.data![1]: '',
-                            style: const TextStyle(
-                              color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold,
-                              fontFamily: 'monospace'
+                            style: TextStyle(
+                              color: Colors.blueGrey.shade500, fontSize: 40, fontWeight: FontWeight.w100,
                             ),
                             maxFontSize: 40, minFontSize: 10, maxLines: 1,
                             textAlign: TextAlign.end,
@@ -76,17 +75,14 @@ class Calculator extends StatelessWidget{
               itemBuilder: (context, index){
                 final symbol = listOfSymbols.elementAt(index);
                 switch(symbol){
-                  case '+': case '-': case '/': case '*': 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
-                  case '.': case '(': case ')': 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
                   case 'AC':
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
+                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: buttonFunction.deleteAll,);
                   case 'Del': 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
+                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: buttonFunction.delete);
                   case '=': 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
-                  default: return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: (){}, index: index);
+                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: buttonFunction.finalResult,);
+                  default: 
+                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: () => buttonFunction.tap(symbol));
                 }
               }                
             ),
