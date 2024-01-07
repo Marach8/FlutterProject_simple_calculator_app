@@ -28,11 +28,9 @@ class ButtonFunction{
   }
 
   void deleteAll(){
-    // if (myList[0].isNotEmpty){
       myList[0] = ''; 
       myList[1] = '0';
-      _controller.sink.add(myList);
-    // } return;    
+      _controller.sink.add(myList); 
   }
 
   void finalResult(){
@@ -48,6 +46,4 @@ class ButtonFunction{
       _controller.sink.add(myList);
     }    
   }
-
-  // _tap(String data) => tap(data);
 }

@@ -15,7 +15,13 @@ class Calculator extends StatelessWidget{
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Simple Calculator', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w200)), 
+        title: const Text(
+          'Simple Calculator', 
+          style: TextStyle(
+            color: Colors.blue, 
+            fontWeight: FontWeight.w200
+          )
+        ), 
         centerTitle: true, backgroundColor: Colors.black26,        
       ),
 
