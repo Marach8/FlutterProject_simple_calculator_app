@@ -43,7 +43,7 @@ class Calculator extends StatelessWidget{
                           child: AutoSizeText(                        
                             snapshot.hasData ? snapshot.data![0]: '',
                             style: TextStyle(
-                              color: Colors.blueGrey.shade400, fontSize: 50, fontWeight: FontWeight.w300,
+                              color: Colors.blueGrey.shade400, fontSize: 50, fontWeight: FontWeight.w200,
                             ),
                             maxFontSize: 50, minFontSize: 10, maxLines: 1,
                           ),
@@ -81,14 +81,41 @@ class Calculator extends StatelessWidget{
               itemBuilder: (context, index){
                 final symbol = listOfSymbols.elementAt(index);
                 switch(symbol){
+                  case '+': case '-': case '*': case '/': case '.':
+                    return ButtonModel(
+                      isOperator: true,
+                      buttonColor: Colors.blue, 
+                      symbol: symbol, 
+                      function: () => buttonFunction.tap(symbol)
+                    );
                   case 'AC':
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: buttonFunction.deleteAll,);
+                    return ButtonModel(
+                      isOperator: false,
+                      buttonColor: Colors.blue, 
+                      symbol: symbol, 
+                      function: buttonFunction.deleteAll,
+                    );
                   case 'Del': 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: buttonFunction.delete);
+                    return ButtonModel(
+                      isOperator: false,
+                      buttonColor: Colors.blue, 
+                      symbol: symbol, 
+                      function: buttonFunction.delete
+                    );
                   case '=': 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: buttonFunction.finalResult,);
+                    return ButtonModel(
+                      isOperator: true,
+                      buttonColor: Colors.blue, 
+                      symbol: symbol, 
+                      function: buttonFunction.finalResult,
+                    );
                   default: 
-                    return ButtonModel(buttonColor: Colors.blue, symbol: symbol, function: () => buttonFunction.tap(symbol));
+                    return ButtonModel(
+                      isOperator: false,
+                      buttonColor: Colors.blueGrey.shade500, 
+                      symbol: symbol, 
+                      function: () => buttonFunction.tap(symbol)
+                    );
                 }
               }                
             ),

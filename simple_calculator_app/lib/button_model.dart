@@ -4,8 +4,10 @@ class ButtonModel extends StatelessWidget {
   final Color buttonColor;
   final String symbol;
   final VoidCallback? function;
+  final bool isOperator;
 
   const ButtonModel({
+    required this.isOperator,
     required this.buttonColor, 
     required this.symbol,
     required this.function,
@@ -16,9 +18,14 @@ class ButtonModel extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: function,
-      child: Text(
-        symbol,
-        style: TextStyle(fontSize: 25, color: buttonColor, fontWeight: FontWeight.w200)
+      child: Center(
+        child: Text(
+          symbol,
+          style: TextStyle(
+            fontSize: isOperator ? 40 : 30, color: buttonColor, 
+            fontWeight: isOperator? FontWeight.w200 : FontWeight.w100
+          )
+        ),
       )
     );
   }
