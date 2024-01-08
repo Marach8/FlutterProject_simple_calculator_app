@@ -112,7 +112,7 @@ class Calculator extends StatelessWidget{
                   default: 
                     return ButtonModel(
                       isOperator: false,
-                      buttonColor: Colors.blueGrey.shade500, 
+                      buttonColor: Colors.blueGrey.shade400, 
                       symbol: symbol, 
                       function: () => buttonFunction.tap(symbol)
                     );
