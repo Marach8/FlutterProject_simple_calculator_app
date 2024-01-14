@@ -5,8 +5,35 @@ import 'package:simple_calculator_app/button_model.dart';
 import 'package:simple_calculator_app/list_of_symbols.dart';
 
 
-class Calculator extends StatelessWidget{
+class Calculator extends StatefulWidget{
   const Calculator({super.key});
+
+  @override
+  State<Calculator> createState() => _CalculatorState();
+}
+
+class _CalculatorState extends State<Calculator> with TickerProviderStateMixin{
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override 
+  void initState(){
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500)
+    );
+    animation = Tween(begin: 1.0, end: 0.0).chain(
+      CurveTween(curve: Curves.easeInCirc)
+    ).animate(controller);
+  }
+
+  @override 
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
+
 
   @override 
   Widget build(BuildContext context){
@@ -46,12 +73,16 @@ class Calculator extends StatelessWidget{
                         left: 5, top: 5,
                         child: SizedBox(
                           width: w,
-                          child: AutoSizeText(                        
-                            snapshot.hasData ? snapshot.data![0]: '',
-                            style: TextStyle(
-                              color: Colors.blueGrey.shade400, fontSize: 50, fontWeight: FontWeight.w200,
+                          child: FadeTransition(
+                            opacity: animation,
+                            child: AutoSizeText(                        
+                              snapshot.hasData ? snapshot.data![0]: '',
+                              style: TextStyle(
+                                color: Colors.blueGrey.shade400, 
+                                fontSize: 50, fontWeight: FontWeight.w200,
+                              ),
+                              maxFontSize: 50, minFontSize: 10, maxLines: 1,
                             ),
-                            maxFontSize: 50, minFontSize: 10, maxLines: 1,
                           ),
                         )
                       ),
@@ -99,7 +130,12 @@ class Calculator extends StatelessWidget{
                       isOperator: false,
                       buttonColor: Colors.blue, 
                       symbol: symbol, 
-                      function: buttonFunction.deleteAll,
+                      function: () {
+                        controller.forward().then((_) {
+                          buttonFunction.deleteAll();
+                          controller.reset();
+                        });                        
+                      },
                     );
                   case 'Del': 
                     return ButtonModel(
