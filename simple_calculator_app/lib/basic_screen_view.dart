@@ -6,7 +6,8 @@ import 'package:simple_calculator_app/list_of_symbols.dart';
 
 
 class BasicView extends StatefulWidget{
-  const BasicView({super.key});
+  final AnimationController controller1, controller2;
+  const BasicView({required this.controller1, required this.controller2, super.key});
 
   @override
   State<BasicView> createState() => _CalculatorState();
@@ -49,13 +50,17 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
             fontWeight: FontWeight.w300
           )
         ), 
-        //centerTitle: true, backgroundColor: Colors.black26,  
-        actions: [
-          IconButton(
-            onPressed: (){},
-            icon: Icon(Icons.arrow_forward_ios, color: Colors.blueGrey.shade400)
-          )
-        ],     
+        centerTitle: true, backgroundColor: Colors.black26,
+        leading: IconButton(
+          onPressed: (){
+            widget.controller1.forward();
+            widget.controller2.forward();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+              color: Colors.blueGrey.shade400
+            )
+        ),     
       ),
 
       body: Column(

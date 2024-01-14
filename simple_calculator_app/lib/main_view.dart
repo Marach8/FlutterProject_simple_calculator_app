@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:simple_calculator_app/basic_screen_view.dart';
 import 'package:simple_calculator_app/scientific._screen_view.dart';
@@ -30,7 +29,6 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin{
 
     basicAnimation = Tween<double>(begin: 0, end: -pi/2).animate(basicController);
     scientificAnimation = Tween<double>(begin: pi/2.7, end: 0).animate(scientificController);
-    
   }
 
   @override 
@@ -42,45 +40,34 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;    
+    final width = MediaQuery.of(context).size.width; 
 
-    return GestureDetector(
-      onHorizontalDragUpdate: (details) {
-        basicController.value += details.delta.dx / width;
-        scientificController.value += details.delta.dx / width;
-      },
-      onHorizontalDragEnd: (_){
-        if(basicController.value < 0.5){
-          basicController.reverse();
-          scientificController.reverse();
-        } else {
-          basicController.forward();
-          scientificController.forward();
-        }
-      },
-      child: AnimatedBuilder(
-        animation: Listenable.merge([basicController, scientificController]),
-        builder: (_, __) => Stack(
-          children: [
-            Container(color: Colors.white),
-            Transform(
-              alignment: Alignment.centerLeft,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..translate(basicController.value * width)
-                ..rotateY(basicAnimation.value),
-              child: const BasicView()
-            ),
-            Transform(
-              alignment: Alignment.centerRight,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..translate(-width + scientificController.value * width)
-                ..rotateY(scientificAnimation.value),
-              child: const ScientificView()
-            ),
-          ]
-        ),
+    return AnimatedBuilder(
+      animation: Listenable.merge([basicController, scientificController]),
+      builder: (_, __) => Stack(
+        children: [
+          Container(color: Colors.white),
+          Transform(
+            alignment: Alignment.centerLeft,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..translate(basicController.value * width)
+              ..rotateY(basicAnimation.value),
+            child: BasicView(
+              controller1: basicController, controller2: scientificController
+            )
+          ),
+          Transform(
+            alignment: Alignment.centerRight,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..translate(-width + scientificController.value * width)
+              ..rotateY(scientificAnimation.value),
+            child: ScientificView(
+              controller1: basicController, controller2: scientificController
+            )
+          ),
+        ]
       ),
     );
   }
