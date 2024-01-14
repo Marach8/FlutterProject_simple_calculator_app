@@ -15,14 +15,20 @@ class Calculator extends StatelessWidget{
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Simple Calculator', 
+        title: Text(
+          'Basic', 
           style: TextStyle(
-            color: Colors.blue, 
-            fontWeight: FontWeight.w200
+            color: Colors.blueGrey.shade400, 
+            fontWeight: FontWeight.w300
           )
         ), 
-        centerTitle: true, backgroundColor: Colors.black26,        
+        //centerTitle: true, backgroundColor: Colors.black26,  
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.arrow_forward_ios, color: Colors.blueGrey.shade400)
+          )
+        ],     
       ),
 
       body: Column(
