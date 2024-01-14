@@ -5,14 +5,14 @@ import 'package:simple_calculator_app/button_model.dart';
 import 'package:simple_calculator_app/list_of_symbols.dart';
 
 
-class Calculator extends StatefulWidget{
-  const Calculator({super.key});
+class BasicView extends StatefulWidget{
+  const BasicView({super.key});
 
   @override
-  State<Calculator> createState() => _CalculatorState();
+  State<BasicView> createState() => _CalculatorState();
 }
 
-class _CalculatorState extends State<Calculator> with TickerProviderStateMixin{
+class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
   late AnimationController controller;
   late Animation<double> animation;
 
@@ -88,15 +88,21 @@ class _CalculatorState extends State<Calculator> with TickerProviderStateMixin{
                       ),
                       Positioned(
                         right: 5, bottom: 5,
-                        child: SizedBox(
-                          width: w,
-                          child: AutoSizeText(
-                            snapshot.hasData? snapshot.data![1]: '',
-                            style: TextStyle(
-                              color: Colors.blueGrey.shade500, fontSize: 40, fontWeight: FontWeight.w100,
+                        child: SizeTransition(
+                          sizeFactor: animation,
+                          axis: Axis.horizontal,
+                          axisAlignment: 0.5,
+                          child: SizedBox(
+                            width: w,
+                            child: AutoSizeText(
+                              snapshot.hasData? snapshot.data![1]: '',
+                              style: TextStyle(
+                                color: Colors.blueGrey.shade500,
+                                fontSize: 40, fontWeight: FontWeight.w100,
+                              ),
+                              maxFontSize: 40, minFontSize: 10, maxLines: 1,
+                              textAlign: TextAlign.end,
                             ),
-                            maxFontSize: 40, minFontSize: 10, maxLines: 1,
-                            textAlign: TextAlign.end,
                           ),
                         )
                       ),
