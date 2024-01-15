@@ -18,6 +18,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
   late Animation<double> animation;
   late Animation<Offset> textAnimation;
 
+
   @override 
   void initState(){
     super.initState();
@@ -55,7 +56,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
 
   @override 
   Widget build(BuildContext context){
-    textAnimationController.forward();
+    //textAnimationController.forward();
     var w = MediaQuery.of(context).size.width;
     final buttonFunction = ButtonFunction();
 
@@ -85,7 +86,9 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
         children: [
           StreamBuilder<List<String>>(
             stream: buttonFunction.controller.stream,
-            builder: (context, snapshot) {
+            builder: (_, snapshot) {
+              snapshot.data != null && snapshot.data!.elementAt(0).isNotEmpty 
+                ? textAnimationController.stop() : textAnimationController.forward();
               return Expanded(
                 flex: 2,
                 child: Container(
@@ -137,11 +140,15 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                           child: SlideTransition(
                             position: textAnimation,
                             textDirection: TextDirection.rtl,
-                            child: Text(
-                              'Tap on the icon at the top-left to go to scientific mode.', 
-                              style: TextStyle(
-                                color: Colors.blueGrey.shade200, fontSize: 15,
-                                fontWeight: FontWeight.w300
+                            child: Opacity(
+                              opacity: snapshot.data != null && 
+                                snapshot.data!.elementAt(0).isNotEmpty ? 0.0 : 1.0,
+                              child: Text(
+                                'Tap on the icon at the top-left to go to scientific mode.', 
+                                style: TextStyle(
+                                  color: Colors.blueGrey.shade200, fontSize: 15,
+                                  fontWeight: FontWeight.w300
+                                ),
                               ),
                             ),
                           ),

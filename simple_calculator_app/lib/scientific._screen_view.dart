@@ -23,7 +23,7 @@ class ScientificView extends StatelessWidget {
           )
         ], 
       ),
-      body: Container(color: Colors.blue)
+      body: Container(color: Colors.blueGrey.shade500.withOpacity(0.2))
     );
   }
 }

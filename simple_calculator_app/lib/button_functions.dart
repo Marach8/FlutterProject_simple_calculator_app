@@ -7,6 +7,8 @@ class ButtonFunction{
   
   static final List<String> _myList = ['', '']; 
   
+  static List<String> get list => _myList;
+  
   StreamController<List<String>> get controller => _controller;
 
   void sinkData() => _controller.sink.add(_myList);
