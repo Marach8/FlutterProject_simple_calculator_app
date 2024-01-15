@@ -14,8 +14,9 @@ class BasicView extends StatefulWidget{
 }
 
 class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
-  late AnimationController controller;
+  late AnimationController controller, textAnimationController;
   late Animation<double> animation;
+  late Animation<Offset> textAnimation;
 
   @override 
   void initState(){
@@ -24,9 +25,25 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
       vsync: this,
       duration: const Duration(milliseconds: 300)
     );
+
+    textAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10)
+    )..repeat();
+
     animation = Tween(begin: 1.0, end: 0.0).chain(
       CurveTween(curve: Curves.easeInCirc)
     ).animate(controller);
+
+    textAnimation = Tween<Offset>(
+      begin: const Offset(0, 0), end: const Offset(2, 0)
+    ).animate(textAnimationController);
+
+    textAnimation.addStatusListener((status) {
+      if(status == AnimationStatus.completed){
+        textAnimationController..reset()..forward();
+      }
+    });
   }
 
   @override 
@@ -38,6 +55,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
 
   @override 
   Widget build(BuildContext context){
+    textAnimationController.forward();
     var w = MediaQuery.of(context).size.width;
     final buttonFunction = ButtonFunction();
 
@@ -111,6 +129,24 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                           ),
                         )
                       ),
+                      Positioned(
+                        top: 0,
+                        child: Transform(
+                          alignment: Alignment.centerRight,
+                          transform: Matrix4.identity()..translate(w),
+                          child: SlideTransition(
+                            position: textAnimation,
+                            textDirection: TextDirection.rtl,
+                            child: Text(
+                              'Tap on the icon at the top-left to go to scientific mode.', 
+                              style: TextStyle(
+                                color: Colors.blueGrey.shade200, fontSize: 15,
+                                fontWeight: FontWeight.w300
+                              ),
+                            ),
+                          ),
+                        )
+                      )
                     ],
                   )
                 ),
