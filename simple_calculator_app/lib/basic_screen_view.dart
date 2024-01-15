@@ -22,7 +22,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500)
+      duration: const Duration(milliseconds: 300)
     );
     animation = Tween(begin: 1.0, end: 0.0).chain(
       CurveTween(curve: Curves.easeInCirc)
@@ -81,7 +81,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                           child: FadeTransition(
                             opacity: animation,
                             child: AutoSizeText(                        
-                              snapshot.hasData ? snapshot.data![0]: '',
+                              snapshot.hasData ? snapshot.data![0] : '',
                               style: TextStyle(
                                 color: Colors.blueGrey.shade400, 
                                 fontSize: 50, fontWeight: FontWeight.w200,
@@ -100,7 +100,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                           child: SizedBox(
                             width: w,
                             child: AutoSizeText(
-                              snapshot.hasData? snapshot.data![1]: '',
+                              snapshot.hasData? snapshot.data![1] : '',
                               style: TextStyle(
                                 color: Colors.blueGrey.shade500,
                                 fontSize: 40, fontWeight: FontWeight.w100,
