@@ -46,4 +46,7 @@ class ButtonFunction{
       _controller.sink.add(myList);
     }    
   }
+
+  Stream<int> getNumbers() 
+    => Stream.periodic(const Duration(milliseconds: 50), (i) => i).take(10);
 }

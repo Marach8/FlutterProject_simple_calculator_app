@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:simple_calculator_app/basic_screen_view.dart';
 import 'package:simple_calculator_app/scientific._screen_view.dart';
 
@@ -40,7 +41,7 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width; 
+    final width = MediaQuery.of(context).size.width;
 
     return AnimatedBuilder(
       animation: Listenable.merge([basicController, scientificController]),
@@ -54,7 +55,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin{
               ..translate(basicController.value * width)
               ..rotateY(basicAnimation.value),
             child: BasicView(
-              controller1: basicController, controller2: scientificController
+              controller1: basicController, 
+              controller2: scientificController
             )
           ),
           Transform(
@@ -64,7 +66,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin{
               ..translate(-width + scientificController.value * width)
               ..rotateY(scientificAnimation.value),
             child: ScientificView(
-              controller1: basicController, controller2: scientificController
+              controller1: basicController, 
+              controller2: scientificController
             )
           ),
         ]

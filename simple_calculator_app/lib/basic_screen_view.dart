@@ -53,6 +53,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
         centerTitle: true, backgroundColor: Colors.black26,
         leading: IconButton(
           onPressed: (){
+            
             widget.controller1.forward();
             widget.controller2.forward();
           },
