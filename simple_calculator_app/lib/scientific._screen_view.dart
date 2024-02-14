@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 class ScientificView extends StatelessWidget {
   final AnimationController controller1, controller2;
-  const ScientificView({required this.controller1, required this.controller2, super.key});
+  const ScientificView({
+    required this.controller1, 
+    required this.controller2, 
+    super.key
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,9 @@ class ScientificView extends StatelessWidget {
           )
         ], 
       ),
-      body: Container(color: Colors.blueGrey.shade500.withOpacity(0.2))
+      body: Container(
+        color: Colors.blueGrey.shade500.withOpacity(0.2)
+      )
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:simple_calculator_app/basic_screen_view.dart';
 import 'package:simple_calculator_app/scientific._screen_view.dart';
 

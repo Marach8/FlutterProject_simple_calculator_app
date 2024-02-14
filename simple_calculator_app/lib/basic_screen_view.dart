@@ -7,7 +7,11 @@ import 'package:simple_calculator_app/list_of_symbols.dart';
 
 class BasicView extends StatefulWidget{
   final AnimationController controller1, controller2;
-  const BasicView({required this.controller1, required this.controller2, super.key});
+  const BasicView({
+    required this.controller1, 
+    required this.controller2, 
+    super.key
+  });
 
   @override
   State<BasicView> createState() => _CalculatorState();
@@ -56,8 +60,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
 
   @override 
   Widget build(BuildContext context){
-    //textAnimationController.forward();
-    var w = MediaQuery.of(context).size.width;
+    var screenWidth = MediaQuery.of(context).size.width;
     final buttonFunction = ButtonFunction();
 
     return Scaffold(
@@ -98,7 +101,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                       Positioned(
                         left: 5, top: 5,
                         child: SizedBox(
-                          width: w,
+                          width: screenWidth,
                           child: FadeTransition(
                             opacity: animation,
                             child: AutoSizeText(                        
@@ -119,7 +122,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                           axis: Axis.horizontal,
                           axisAlignment: 0.5,
                           child: SizedBox(
-                            width: w,
+                            width: screenWidth,
                             child: AutoSizeText(
                               snapshot.hasData? snapshot.data![1] : '',
                               style: TextStyle(
@@ -136,7 +139,7 @@ class _CalculatorState extends State<BasicView> with TickerProviderStateMixin{
                         top: 0,
                         child: Transform(
                           alignment: Alignment.centerRight,
-                          transform: Matrix4.identity()..translate(w),
+                          transform: Matrix4.identity()..translate(screenWidth),
                           child: SlideTransition(
                             position: textAnimation,
                             textDirection: TextDirection.rtl,
